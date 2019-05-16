@@ -19,8 +19,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-RSpec.describe Nanocurrency do
-  it "has a version number" do
-    expect(Nanocurrency::VERSION).not_to be nil
+require "nanocurrency"
+
+RSpec.describe Nano::Base32 do
+  it "should encode correctly" do
+    key = "00D12634450C3B481F2A73150B55B5AE4B744A6028B61133FCAAF9224A1555A6"
+    expected = "118j6rt6c53ub1hknwro3fcuddkdgj781c7p46szscqs6b73cof8"
+    bytes = key.scan(/../).map(&:hex)
+    expect(Nano::Base32.encode(bytes)).to eq expected
+  end
+
+  it "should decode correctly" do
+    address = "118j6rt6c53ub1hknwro3fcuddkdgj781c7p46szscqs6b73cof8"
+    exp = "00D12634450C3B481F2A73150B55B5AE4B744A6028B61133FCAAF9224A1555A6"
+    expect(Nano::Base32.decode(address)).to eq exp
   end
 end

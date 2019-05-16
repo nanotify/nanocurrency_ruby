@@ -19,8 +19,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-RSpec.describe Nanocurrency do
-  it "has a version number" do
-    expect(Nanocurrency::VERSION).not_to be nil
+module Nano
+  module Utils
+    extend self
+    def bytes_to_hex(bytes)
+      bytes.map { |x| "%02X" % x }.join
+    end
   end
 end
