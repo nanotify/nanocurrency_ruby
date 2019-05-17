@@ -21,6 +21,7 @@
 
 require "nanocurrency/version"
 require "nano/base32"
+require "nano/key"
 
 module Nano
   # Your code goes here...
