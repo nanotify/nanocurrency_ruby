@@ -19,11 +19,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-require "nanocurrency/version"
-require "nano/base32"
-require "nano/conversion"
-require "nano/key"
-
 module Nano
-  # Your code goes here...
+  module Check
+    extend self
+    def is_valid_hex?(value)
+      value.is_a?(String) && value.match?(/^[0-9a-fA-F]{32}$/)
+    end
+
+    def is_numerical?(value)
+      return false unless value.is_a?(String)
+      return false if value.start_with?(".")
+      return false if value.end_with?(".")
+
+      number_without_dot = value.sub(".", "")
+
+      # More than one '.' in the number.
+      return false unless number_without_dot.count(".") == 0
+
+      number_without_dot.match?(/^[0-9]*$/)
+    end
+  end
 end
