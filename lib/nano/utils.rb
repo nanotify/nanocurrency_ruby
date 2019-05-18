@@ -32,11 +32,15 @@ module Nano
     end
 
     def hex_to_bin(hex)
-      hex_to_bytes(hex).pack("C*")
+      bytes_to_bin(hex_to_bytes(hex))
     end
 
     def bin_to_hex(bin)
       bin.unpack('H*').first
+    end
+
+    def bytes_to_bin(bytes)
+      bytes.pack("C*")
     end
   end
 end

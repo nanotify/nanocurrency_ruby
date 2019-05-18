@@ -24,17 +24,17 @@ require "nanocurrency"
 RSpec.describe Nano::Key do
   it "should verify a seed" do
     seed = "14533b83ed06401015a449ca8d1cf22e042b870bf619beef24d4ef77090a5b5b"
-    expect(Nano::Key.is_seed_valid?(seed)).to be true
+    expect(Nano::Check.is_seed_valid?(seed)).to be true
   end
 
   it "should not verify an invalid seed" do
     seed = "abcde"
-    expect(Nano::Key.is_seed_valid?(seed)).to_not be true
+    expect(Nano::Check.is_seed_valid?(seed)).to_not be true
   end
 
   it "should generate a valid seed" do
     seed = Nano::Key.generate_seed
-    expect(Nano::Key.is_seed_valid?(seed)).to be true
+    expect(Nano::Check.is_seed_valid?(seed)).to be true
   end
 
   it "should not generate the same seed in a row" do
@@ -45,12 +45,12 @@ RSpec.describe Nano::Key do
   end
 
   it "should verify an index" do
-    expect(Nano::Key.is_index_valid?(0)).to be true
+    expect(Nano::Check.is_index_valid?(0)).to be true
   end
 
   it "should not verify an invalid index" do
-    expect(Nano::Key.is_index_valid?(-1)).to be false
-    expect(Nano::Key.is_index_valid?("hello")).to be false
+    expect(Nano::Check.is_index_valid?(-1)).to be false
+    expect(Nano::Check.is_index_valid?("hello")).to be false
   end
 
   it "should derive the correct secret key for index 0" do

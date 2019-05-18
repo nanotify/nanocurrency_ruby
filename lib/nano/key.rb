@@ -21,36 +21,34 @@
 
 require "securerandom"
 require "blake2b"
-require "ed25519_blake2b"
+require "nanocurrency_ext"
 require_relative "./account"
+require_relative "./check"
 
 module Nano
   module Key
     extend self
-
-    MIN_INDEX = 0
-    MAX_INDEX = 2 ** 32 - 1
 
     def generate_seed
       SecureRandom.hex(32)
     end
 
     def derive_secret_key(seed, index)
-      raise ArgumentError, "Seed is invalid" unless is_seed_valid?(seed)
-      raise ArgumentError, "Index is invalid" unless is_index_valid?(index)
+      raise ArgumentError, "Seed is invalid" unless Nano::Check.is_seed_valid?(seed)
+      raise ArgumentError, "Index is invalid" unless Nano::Check.is_index_valid?(index)
 
       seed_bin = Nano::Utils.hex_to_bin(seed)
       Blake2b.hex(seed_bin + [index].pack('L>'), Blake2b::Key.none, 32).upcase
     end
 
     def derive_public_key(input)
-      is_secret_key = is_key? input
+      is_secret_key = Nano::Check.is_key?(input)
       account = Nano::Account.from_address(input)
       is_address = !account.nil?
       raise ArgumentError, "Incorrect input" unless is_secret_key || is_address
 
       if is_secret_key
-        res = Ed25519Blake2b.public_key(Nano::Utils.hex_to_bin(input))
+        res = NanocurrencyExt.public_key(Nano::Utils.hex_to_bin(input))
         Nano::Utils.bin_to_hex(res).upcase
       else
         account.public_key
@@ -58,7 +56,7 @@ module Nano
     end
 
     def derive_address(public_key, prefix = "nano_")
-      is_public_key = is_key? public_key
+      is_public_key = Nano::Check.is_key?(public_key)
       raise ArgumentError, "Incorrect key type" unless is_public_key
 
       is_valid_prefix = prefix == "nano_" || prefix == "xrb_"
@@ -71,18 +69,6 @@ module Nano
       checksum_bytes = Nano::Utils.hex_to_bytes(checksum).reverse
       enc_chk = Nano::Base32.encode(checksum_bytes)
       "#{prefix}#{public_key_enc}#{enc_chk}"
-    end
-
-    def is_seed_valid?(seed)
-      seed.is_a?(String) && seed.match?(/^[0-9a-fA-F]{64}$/)
-    end
-
-    def is_index_valid?(index)
-      index.is_a?(Integer) && index >= MIN_INDEX && index <= MAX_INDEX
-    end
-
-    def is_key?(input)
-      input.is_a?(String) && input.match?(/^[0-9a-fA-F]{64}$/)
     end
   end
 end
