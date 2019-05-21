@@ -1,5 +1,19 @@
 module Nano
+  ##
+  # The Account class is used to simplify conversion from account to
+  # public key
   class Account
+
+    # @return [String] The base32 encoded account address
+    attr_reader :address
+
+    # @return [String] The public key for the account encoded in hexadecimal
+    attr_reader :public_key
+
+    ##
+    # The Account intiailizer.
+    # @param value [Hash] This hash can contain the keys `:account` and
+    #   `:public_key` which will be stored within the object
     def initialize(val)
       if val[:address]
         @address = val[:address]
@@ -10,14 +24,13 @@ module Nano
       end
     end
 
-    def address
-      @address
-    end
-
-    def public_key
-      @public_key
-    end
-
+    ##
+    # A class initializer to create an Account object from the account
+    # base32 address.
+    #
+    # @param input [String] The base32 account address
+    #
+    # @return [Account] Returns a created account given a valid account address
     def self.from_address(input)
       return nil unless input.is_a? String
 

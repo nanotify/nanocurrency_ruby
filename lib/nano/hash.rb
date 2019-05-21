@@ -3,13 +3,22 @@ require_relative "./conversion"
 require_relative "./utils"
 
 module Nano
+  ##
+  # The Hash module is responsible for producing a block hash given a
+  # Block object.
   module Hash
     extend self
 
     STATE_BLOCK_PREAMBLE_BITS = Nano::Utils.bytes_to_bin(
       Array.new(32) {|i| i == 31 ? 6 : 0}
-    )
+    ).freeze
 
+    ##
+    # This method will produce a hash for the given block
+    #
+    # @param block [Nano::Block] The block to derive a hash from
+    #
+    # @return [String] The hash in a hexadecimal formatted string.
     def hash_block(block)
       account_bits = Nano::Utils.hex_to_bin(
         Nano::Key.derive_public_key(block.account)

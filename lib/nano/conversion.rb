@@ -4,11 +4,18 @@ require_relative "./check"
 
 module Nano
 
+  ##
+  # The Unit module provides utilities to allow conversion for the different
+  # unit types referenced in the Nano protocol.
   module Unit
     extend self
 
-    UNIT_SET = [:hex, :raw, :nano, :knano, :Nano, :NANO, :KNano, :MNano].to_set
+    # A set of unit symbols found in the Nano protocol.
+    UNIT_SET = [
+      :hex, :raw, :nano, :knano, :Nano, :NANO, :KNano, :MNano
+    ].to_set.freeze
 
+    # A hash of the unit types and number of zeros the unit is offset by.
     UNIT_ZEROS = {
       :hex => 0,
       :raw => 0,
@@ -18,12 +25,21 @@ module Nano
       :NANO => 30,
       :KNano => 33,
       :MNano => 36
-    }
+    }.freeze
 
+    ##
+    # @return [Boolean] True if the unit is contained within the unit set.
     def valid_unit?(unit)
       UNIT_SET === unit
     end
 
+    ##
+    # Converts the value in a unit type into another representation
+    #
+    # @param value [String] A number string of the value in the base unit
+    # @param from [Symbol] A valid unit which denotes the base unit
+    # @param to [Symbol] The unit type to convert the value into.
+    # @return [String] The converted value as the unit from to
     def convert(value, from, to)
       raise ArgumentError, "Invalid from unit type" unless Unit.valid_unit?(from)
       raise ArgumentError, "Invalid to unit type" unless Unit.valid_unit?(to)
@@ -71,10 +87,13 @@ module Nano
     end
 
 
+    # @return [Hash] The unit zeros constant
     def unit_zeros
       UNIT_ZEROS
     end
 
+    # @param [Symbol] The unit type
+    # @return [Integer] The number of zeros for a unit type
     def zeros_for_unit(unit)
       raise ArgumentError, "Invalid unit" unless valid_unit? unit
       UNIT_ZEROS[unit]

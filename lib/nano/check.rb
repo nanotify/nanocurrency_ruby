@@ -1,12 +1,24 @@
 module Nano
+  ##
+  # The Check module contains some basic sanity and type checks to ensure
+  # robustness throughout the Gem.
   module Check
 
     MIN_INDEX = 0
     MAX_INDEX = 2 ** 32 - 1
 
     extend self
+
     def is_valid_hex?(value)
       value.is_a?(String) && value.match?(/^[0-9a-fA-F]{32}$/)
+    end
+
+    def is_valid_hash?(value)
+      is_hash_valid?(value)
+    end
+
+    def is_hex_valid?(value)
+      is_valid_hex?(value)
     end
 
     def is_numerical?(value)

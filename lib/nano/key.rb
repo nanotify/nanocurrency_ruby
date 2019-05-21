@@ -5,16 +5,32 @@ require_relative "./account"
 require_relative "./check"
 
 module Nano
+  ##
+  # The key module is responsible for handling the key and seed based
+  # operations in the Nano module.
   module Key
     extend self
 
+    ##
+    # Generates a 32 byte seed as a hexidecimal string. Cryptographically
+    # secure.
+    # return [String] A 64 length string of hexidecimal.
     def generate_seed
       SecureRandom.hex(32)
     end
 
+    ##
+    # Derive a secret key from a seed, given an index.
+    # @param seed [String] The seed to generate the secret key from,
+    #   in hexadecimal format
+    # @param index [Integer] The index to generate the secret key from
     def derive_secret_key(seed, index)
-      raise ArgumentError, "Seed is invalid" unless Nano::Check.is_seed_valid?(seed)
-      raise ArgumentError, "Index is invalid" unless Nano::Check.is_index_valid?(index)
+      raise(
+        ArgumentError, "Seed is invalid"
+      ) unless Nano::Check.is_seed_valid?(seed)
+      raise(
+        ArgumentError, "Index is invalid"
+      ) unless Nano::Check.is_index_valid?(index)
 
       seed_bin = Nano::Utils.hex_to_bin(seed)
       Blake2b.hex(seed_bin + [index].pack('L>'), Blake2b::Key.none, 32).upcase

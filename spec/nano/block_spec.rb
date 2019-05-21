@@ -102,8 +102,9 @@ RSpec.describe Nano::Block do
     end
 
     it "should produce the correct work" do
-      work = @block.compute_work
+      work = @block.compute_work!
       expect(Nano::Work.is_work_valid?(@block.previous, work)).to eq true
+      expect(work).to eq @block.work
     end
   end
 
@@ -131,9 +132,10 @@ RSpec.describe Nano::Block do
     end
 
     it "should produce the correct work" do
-      work = @block.compute_work
+      work = @block.compute_work!
       hash = Nano::Key.derive_public_key(@block.account)
       expect(Nano::Work.is_work_valid?(hash, work)).to eq true
+      expect(work).to eq @block.work
     end
 
   end

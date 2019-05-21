@@ -1,11 +1,22 @@
 require_relative './utils'
 
 module Nano
+  ##
+  # This module performs encoding and decoding of Base32 as specified by
+  # the Nano protocol.
   module Base32
     extend self
 
+    ##
+    # The Base32 alphabet of characters.
     ALPHABET = "13456789abcdefghijkmnopqrstuwxyz".freeze
 
+    ##
+    # Encode an array of bytes into Base32 string.
+    #
+    # @param bytes [Array<Int8>] The byte array to encode.
+    # 
+    # @return [String] The base32 encoded representation of the bytes
     def encode(bytes)
       length = bytes.length
       leftover = (length * 8) % 5
@@ -31,6 +42,12 @@ module Nano
       output
     end
 
+    ##
+    # Decodes a Base32 encoded string into a hex string
+    #
+    # @param str [String] The base32 encoded string
+    #
+    # @returns [String] The hexadecimal decoded base32 string
     def decode(str)
       length = str.length
       leftover = (length * 5) % 8
@@ -42,7 +59,7 @@ module Nano
       output = Array.new
 
       length.times do |i|
-        value = (value << 5) | read_char!(str[i])
+        value = (value << 5) | read_char(str[i])
         bits += 5
 
         if bits >= 8
@@ -59,12 +76,12 @@ module Nano
       Nano::Utils.bytes_to_hex(output)
     end
 
-    def read_char!(chr)
+    def read_char(chr)
       idx = ALPHABET.index(chr)
       raise ArgumentError, "Character #{chr} not base32 compliant" if idx.nil? 
       idx
     end
 
-    module_function :read_char!
+    module_function :read_char
   end
 end
