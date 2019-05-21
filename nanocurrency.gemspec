@@ -10,17 +10,17 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "A toolkit for the Nano cryptocurrency, allowing you to derive keys, generate seeds, hashes, signatures, proofs of work and blocks."
   spec.description   = "A toolkit for the Nano cryptocurrency, allowing you to derive keys, generate seeds, hashes, signatures, proofs of work and blocks."
-  spec.homepage      = "https://github.com/nanotify/nanocurrency"
+  spec.homepage      = "https://github.com/nanotify/nanocurrency_ruby"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+    spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
     spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/nanotify/nanocurrency.git"
-    spec.metadata["changelog_uri"] = "https://github.com/nanotify/nanocurrency"
+    spec.metadata["source_code_uri"] = "https://github.com/nanotify/nanocurrency_ruby.git"
+    spec.metadata["changelog_uri"] = "https://github.com/nanotify/nanocurrency_ruby"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
