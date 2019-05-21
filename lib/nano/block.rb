@@ -1,37 +1,50 @@
-# MIT License
-#
-# Copyright (c) 2019 Nanotify
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 require_relative "./hash"
 require_relative "./work"
+require_relative "./check"
 require "nanocurrency_ext"
 
 module Nano
   class Block
       def initialize(params)
         @type = "state"
+
         @previous = params[:previous]
+
+        raise ArgumentError, "Missing data for previous" if @previous.nil?
+        raise(
+          ArgumentError, "Invalid previous hash #{@previous}"
+        ) unless Nano::Check.is_valid_hash? @previous
+
         @account = params[:account]
+        raise ArgumentError, "Missing data for account" if @account.nil?
+        raise(
+          ArgumentError, "Invalid account #{@account}"
+        ) unless Nano::Check.is_valid_account? @account
+
         @representative = params[:representative]
+        raise(
+          ArgumentError, "Missing data for representative"
+        ) if @representative.nil?
+        raise(
+          ArgumentError, "Invalid representative #{@representative}"
+        ) unless Nano::Check.is_valid_account? @representative
+
         @balance = params[:balance]
+        raise(
+          ArgumentError, "Missing data for balance"
+        ) if @balance.nil?
+        raise(
+          ArgumentError, "Invalid balance #{@balance}"
+        ) unless Nano::Check.is_balance_valid? @balance
+
         @link = params[:link]
+        raise(
+          ArgumentError, "Missing data for link"
+        ) if @link.nil?
+        raise(
+          ArgumentError, "Invalid link #{@link}"
+        ) unless Nano::Check.is_hash_valid? @link
+
         @work = params[:work]
         @signature = params[:signature]
       end
