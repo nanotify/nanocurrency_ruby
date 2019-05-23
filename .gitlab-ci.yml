@@ -1,0 +1,35 @@
+image: ruby:2.5
+
+stages:
+  - test
+  - build
+  - deploy
+
+before_script:
+- gem install bundler:1.16.6
+- bundler update
+
+test:unit:
+  stage: test
+  script:
+    - bundle exec rake full
+
+test:tag:
+  stage: test
+  only:
+    - tags
+  script:
+    - GEM_RELEASE_VERSION=$CI_COMMIT_TAG ruby test/version.rb
+
+build:rubygems:
+  only: 
+    - tags
+  script:
+    - gem build nanocurrency
+
+deploy:rubygems:
+  only: 
+    - tags
+  script:
+    - gem push nanocurrency-$CI_COMMIT_TAG.gem
+

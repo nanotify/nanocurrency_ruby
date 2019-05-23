@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nanocurrency (0.1.0)
+    nanocurrency (0.1.1)
       blake2b
 
 GEM
