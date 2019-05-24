@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "A toolkit for the Nano cryptocurrency, allowing you to derive keys, generate seeds, hashes, signatures, proofs of work and blocks."
   spec.description   = "A toolkit for the Nano cryptocurrency, allowing you to derive keys, generate seeds, hashes, signatures, proofs of work and blocks."
-  spec.homepage      = "https://github.com/nanotify/nanocurrency_ruby"
+  spec.homepage      = "https://gitlab.com/Nanotify/ruby/nanocurrency"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -19,8 +19,9 @@ Gem::Specification.new do |spec|
     spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
     spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/nanotify/nanocurrency_ruby.git"
-    spec.metadata["changelog_uri"] = "https://github.com/nanotify/nanocurrency_ruby"
+    spec.metadata["source_code_uri"] = "https://gitlab.com/Nanotify/ruby/nanocurrency"
+    spec.metadata["changelog_uri"] = "https://gitlab.com/Nanotify/ruby/nanocurrency"
+    spec.metadata["documentation_uri"] = "https://www.rubydoc.info/gems/nanocurrency"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
@@ -34,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+  spec.extensions    = %w[ext/nanocurrency_ext/extconf.rb]
 
   spec.add_dependency "blake2b"
 

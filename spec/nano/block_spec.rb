@@ -20,6 +20,7 @@
 # SOFTWARE.
 
 require "nanocurrency"
+require "json"
 
 RSpec.describe Nano::Block do
 
@@ -75,6 +76,21 @@ RSpec.describe Nano::Block do
 
     it "should have the correct link as account" do
       expect(@block.link_as_account).to eq "nano_1cw7rseeiodiej3ktc6itzswrgdbqc56jfpp9gnd6ar19nsdprtioh31wsh9"
+    end
+
+    it "should convert to json correctly" do
+      json = {
+        type: "state",
+        account: "xrb_13okhm9junjik3cct9os7gsxhwjfzggrfjqpmhna91jucsqqfincr1h616kd",
+        previous: "483656785A048633A0FDAC8461BB224E0BBDAACFE0EB4EE63737ADB743BB029C",
+        representative: "xrb_1oenixj4qtpfcembga9kqwggkb87wooicfy5df8nhdywrjrrqxk7or4gz15b",
+        balance: "417328526500000000000000000000",
+        link: "2B85C658C8557064432D2890D7F3CC3969BA8648B6D63BA8B223003D32BB6350",
+        link_as_account: "nano_1cw7rseeiodiej3ktc6itzswrgdbqc56jfpp9gnd6ar19nsdprtioh31wsh9",
+        signature: "4F51A5B0ED0345491DB0A5EE65C4FF6C10BC86DF09DC284AF0692DE50C9C7DA31399DB4992D01F578A04ECFF619390D6989D63D7B8B69D158932432D5E0E0D02",
+        work: "d79297006b48681b"
+      }.to_json
+      expect(@block.to_json).to eq json
     end
   end
 

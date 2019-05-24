@@ -2,6 +2,7 @@ require_relative "./hash"
 require_relative "./work"
 require_relative "./check"
 require "nanocurrency_ext"
+require "json"
 
 module Nano
   ##
@@ -36,13 +37,13 @@ module Nano
 
     ##
     # The block initializer, requires certain parameters to be valid.
-    # @param params [Hash] The block parameters to construct the block with.
-    #   `:previous` - The previous block hash as a string
-    #   `:account` - The associated account address as a string
-    #   `:representative` - The account representative as a string
-    #   `:balance` - The account balance after this block in raw unit
-    #   `:link` - The link hash associated with this block.
-    #   `:work` - The proof of work for the block (optional)
+    # @param params [Hash] The block parameters to construct the block with.\n
+    #   `:previous` - The previous block hash as a string\n
+    #   `:account` - The associated account address as a string\n
+    #   `:representative` - The account representative as a string\n
+    #   `:balance` - The account balance after this block in raw unit\n
+    #   `:link` - The link hash associated with this block.\n
+    #   `:work` - The proof of work for the block (optional)\n
     #   `:signature` - The signature for this block (optional)
     def initialize(params)
       @type = "state"
@@ -137,6 +138,20 @@ module Nano
     # @return [String] The computed hash for the block.
     def hash
       Nano::Hash.hash_block(self)
+    end
+
+    def to_json(options = nil)
+      {
+        type: type,
+        account: account,
+        previous: previous,
+        representative: representative,
+        balance: balance,
+        link: link,
+        link_as_account: link_as_account,
+        signature: signature,
+        work: work
+      }.to_json(options)
     end
   end
 end

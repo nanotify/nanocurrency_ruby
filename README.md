@@ -1,8 +1,10 @@
 # Nanocurrency
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nanocurrency`. To experiment with that code, run `bin/console` for an interactive prompt.
+A Ruby toolkit and library for the Nano cryptocurrency
 
-TODO: Delete this and the text above, and describe your gem
+To view documentation:
+
+https://www.rubydoc.info/gems/nanocurrency
 
 ## Installation
 
@@ -22,7 +24,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+documentation here: https://www.rubydoc.info/gems/nanocurrency
 
 ## Development
 

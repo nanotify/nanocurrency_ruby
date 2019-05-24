@@ -2,7 +2,6 @@ image: ruby:2.5
 
 stages:
   - test
-  - build
   - deploy
 
 before_script:
@@ -21,15 +20,12 @@ test:tag:
   script:
     - GEM_RELEASE_VERSION=$CI_COMMIT_TAG ruby test/version.rb
 
-build:rubygems:
-  only: 
-    - tags
-  script:
-    - gem build nanocurrency
-
 deploy:rubygems:
+  stage: deploy
   only: 
     - tags
   script:
+    - "echo '---\n:rubygems_api_key: '$RUBYGEMS_API_KEY > ~/.gem/credentials"
+    - chmod 0600 ~/.gem/credentials
+    - gem build nanocurrency
     - gem push nanocurrency-$CI_COMMIT_TAG.gem
-
