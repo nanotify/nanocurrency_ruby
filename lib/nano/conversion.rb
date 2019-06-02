@@ -61,9 +61,9 @@ module Nano
 
       big_number = 0
       if from == :hex
-        big_number = BigDecimal.new(value.to_i(16))
+        big_number = BigDecimal(value.to_i(16))
       else
-        big_number = BigDecimal.new(value)
+        big_number = BigDecimal(value)
       end
 
       is_increase = zero_difference > 0
