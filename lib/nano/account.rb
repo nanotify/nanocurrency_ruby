@@ -47,11 +47,10 @@ module Nano
       public_key_bytes = Nano::Base32.decode(input[prefix_length, 52])
       checksum = Nano::Base32.decode(input[(prefix_length + 52)..-1])
       public_key_bin = Nano::Utils.hex_to_bin public_key_bytes
-      computed_check = Blake2b.hex(
-        public_key_bin, Blake2b::Key.none, 5
-      ).reverse.upcase
+      computed_check_bytes = Blake2b.bytes(public_key_bin, Blake2b::Key.none, 5).reverse
+      computed_check = Nano::Utils.bytes_to_hex(computed_check_bytes)
 
-      return nil if computed_check == checksum
+      return nil if computed_check != checksum
 
       Account.new(:address => input, :public_key => public_key_bytes)
     end
