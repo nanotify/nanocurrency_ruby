@@ -156,9 +156,40 @@ VALUE nanocurrency_compute_work(VALUE self, VALUE rbHash) {
   }
 }
 
+VALUE nanocurrency_sign_open(VALUE self, VALUE rbHash, VALUE rbPublic_key, VALUE rbSignature) {
+  Check_Type(rbHash, T_STRING);
+  Check_Type(rbPublic_key, T_STRING);
+  Check_Type(rbSignature, T_STRING);
+
+  if (RSTRING_LEN(rbPublic_key) != 32) {
+    rb_raise(rb_eArgError, "The public key must be 32 bytes in length");
+    return Qnil;
+  }
+
+  if (RSTRING_LEN(rbHash) != 32) {
+    rb_raise(rb_eArgError, "The hash must be 32 bytes in length");
+    return Qnil;
+  }
+
+  if (RSTRING_LEN(rbSignature) != 64) {
+    rb_raise(rb_eArgError, "The signature must be 64 bytes in length");
+    return Qnil;
+  }
+
+  unsigned char *public_key = RSTRING_PTR(rbPublic_key);
+  unsigned char *signature = RSTRING_PTR(rbSignature);
+  unsigned char *message = RSTRING_PTR(rbHash);
+  size_t message_len = RSTRING_LEN(rbHash);
+
+  int result = ed25519_sign_open(message, message_len, public_key, signature);
+
+  return result == 0 ? Qtrue : Qfalse;
+}
+
 void Init_nanocurrency_ext() {
   cNanocurrency = rb_define_module("NanocurrencyExt");
   rb_define_singleton_method(cNanocurrency, "public_key", nanocurrency_public_key, 1);
   rb_define_singleton_method(cNanocurrency, "sign", nanocurrency_sign, 2);
+  rb_define_singleton_method(cNanocurrency, "sign_open", nanocurrency_sign_open, 3);
   rb_define_singleton_method(cNanocurrency, "compute_work", nanocurrency_compute_work, 1);
 }
